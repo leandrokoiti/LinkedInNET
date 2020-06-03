@@ -2688,7 +2688,7 @@ namespace Sparkle.LinkedInNET.Organizations
 
 #region ReturnTypes for Shares
 
-// WriteReturnTypes(Shares, StareStatistic)
+// WriteReturnTypes(Shares, ShareStatistic)
 namespace Sparkle.LinkedInNET.Shares
 {
     using System;
@@ -2698,10 +2698,10 @@ namespace Sparkle.LinkedInNET.Shares
     using Newtonsoft.Json.Linq;
 
     /// <summary>
-    /// Name: 'StareStatistic'
+    /// Name: 'ShareStatistic'
     /// </summary>
-    [Serializable, XmlRoot("StareStatistic")]
-    public class StareStatistic
+    [Serializable, XmlRoot("ShareStatistic")]
+    public class ShareStatistic
     {
         /// <summary>
         /// Field: 'elements' (on-demand)
@@ -2877,7 +2877,7 @@ namespace Sparkle.LinkedInNET.Shares
     using System.Xml.Serialization;
 
     /// <summary>
-    /// Field selectors for the 'StareStatistic', 'PostStatistic', 'ShareStatisticsElement', 'totalShareStatistics', 'PostShares' return types.
+    /// Field selectors for the 'ShareStatistic', 'PostStatistic', 'ShareStatisticsElement', 'totalShareStatistics', 'PostShares' return types.
     /// </summary>
     public static class SharesFields {
         /// <summary>
@@ -2885,14 +2885,14 @@ namespace Sparkle.LinkedInNET.Shares
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<StareStatistic> WithElements(this FieldSelector<StareStatistic> me) { return me.Add("elements"); }
+        public static FieldSelector<ShareStatistic> WithElements(this FieldSelector<ShareStatistic> me) { return me.Add("elements"); }
         
         /// <summary>
         /// Includes all the fields.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<StareStatistic> WithAllFields(this FieldSelector<StareStatistic> me) { return me.AddRange("elements"); }
+        public static FieldSelector<ShareStatistic> WithAllFields(this FieldSelector<ShareStatistic> me) { return me.AddRange("elements"); }
         
         /// <summary>
         /// Includes the field 'elements'.
@@ -8714,7 +8714,7 @@ namespace Sparkle.LinkedInNET.Shares
                         /// <remarks>
                         /// See https://developer.linkedin.com/docs/guide/v2/organizations/share-statistics
                         /// </remarks>
-                        public Shares.StareStatistic GetShareStatistics(
+                        public Shares.ShareStatistic GetShareStatistics(
                               UserAuthorization user 
                             , string companyId 
                             , string shareId 
@@ -8732,7 +8732,7 @@ namespace Sparkle.LinkedInNET.Shares
                             if (!this.ExecuteQuery(context))
                                 this.HandleJsonErrorResponse(context);
                             
-                            var result = this.HandleJsonResponse<Shares.StareStatistic>(context);
+                            var result = this.HandleJsonResponse<Shares.ShareStatistic>(context);
                             return result;
                         }
 
@@ -8742,7 +8742,7 @@ namespace Sparkle.LinkedInNET.Shares
                             /// <remarks>
                             /// See https://developer.linkedin.com/docs/guide/v2/organizations/share-statistics
                             /// </remarks>
-                            public async Task<Shares.StareStatistic> GetShareStatisticsAsync(
+                            public async Task<Shares.ShareStatistic> GetShareStatisticsAsync(
                                   UserAuthorization user 
                                 , string companyId 
                                 , string shareId 
@@ -8761,7 +8761,7 @@ namespace Sparkle.LinkedInNET.Shares
                                 if (!exec)
                                     this.HandleJsonErrorResponse(context);
                                 
-                                var result = this.HandleJsonResponse<Shares.StareStatistic>(context);
+                                var result = this.HandleJsonResponse<Shares.ShareStatistic>(context);
                                 return result;
                             }
                                 
@@ -8823,22 +8823,22 @@ namespace Sparkle.LinkedInNET.Shares
                                     }
                                         
                                         /// <summary>
-                                        /// Shares will be ordered by created time with the latest one being the first.                   We recommend setting the sharesPerOwner to 1,000 and count to 50, which means our endpoint will return up to 1,000 shares per owner while the total elements returned per response will be 50. If you want the next 50 of 1,000, you will have to paginate with start query parameter.
+                                        /// Fetch day based share statistics for two specific organization shares.
                                         /// </summary>
                                         /// <remarks>
-                                        /// See https://developer.linkedin.com/docs/guide/v2/shares/share-api#types
+                                        /// See https://developer.linkedin.com/docs/guide/v2/organizations/share-statistics
                                         /// </remarks>
-                                        public Shares.PostShares GetShares(
+                                        public Shares.ShareStatistic GetShareStatisticsPerDay(
                                               UserAuthorization user 
-                                            , string urn 
-                                            , int sharesPerOwner = 1000
-                                            , int count = 50
-                                            , int start = 0
+                                            , string companyId 
+                                            , string shareId 
+                                            , string startTimestamp 
+                                            , string endTimestamp 
                                         )
                                         {
-                                            string urlFormat = "/v2/shares?q=owners&owners={urn}&sharesPerOwner={int SharesPerOwner = 1000}&count={int Count = 50}&start={int Start = 0}";
+                                            string urlFormat = "/v2/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:{CompanyId}&shares[0]=urn:li:share:{ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}";
                                             string skipUrlParamsEscape = "";
-                                            var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "urn", urn, "int SharesPerOwner = 1000", sharesPerOwner, "int Count = 50", count, "int Start = 0", start);
+                                            var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "CompanyId", companyId, "ShareId", shareId, "StartTimestamp", startTimestamp, "EndTimestamp", endTimestamp);
 
                                             var context = new RequestContext();
                                             context.UserAuthorization = user;
@@ -8848,27 +8848,27 @@ namespace Sparkle.LinkedInNET.Shares
                                             if (!this.ExecuteQuery(context))
                                                 this.HandleJsonErrorResponse(context);
                                             
-                                            var result = this.HandleJsonResponse<Shares.PostShares>(context);
+                                            var result = this.HandleJsonResponse<Shares.ShareStatistic>(context);
                                             return result;
                                         }
 
                                             /// <summary>
-                                            /// Shares will be ordered by created time with the latest one being the first.                   We recommend setting the sharesPerOwner to 1,000 and count to 50, which means our endpoint will return up to 1,000 shares per owner while the total elements returned per response will be 50. If you want the next 50 of 1,000, you will have to paginate with start query parameter.
+                                            /// Fetch day based share statistics for two specific organization shares.
                                             /// </summary>
                                             /// <remarks>
-                                            /// See https://developer.linkedin.com/docs/guide/v2/shares/share-api#types
+                                            /// See https://developer.linkedin.com/docs/guide/v2/organizations/share-statistics
                                             /// </remarks>
-                                            public async Task<Shares.PostShares> GetSharesAsync(
+                                            public async Task<Shares.ShareStatistic> GetShareStatisticsPerDayAsync(
                                                   UserAuthorization user 
-                                                , string urn 
-                                                , int sharesPerOwner = 1000
-                                                , int count = 50
-                                                , int start = 0
+                                                , string companyId 
+                                                , string shareId 
+                                                , string startTimestamp 
+                                                , string endTimestamp 
                                             )
                                             {
-                                                string urlFormat = "/v2/shares?q=owners&owners={urn}&sharesPerOwner={int SharesPerOwner = 1000}&count={int Count = 50}&start={int Start = 0}";
+                                                string urlFormat = "/v2/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:{CompanyId}&shares[0]=urn:li:share:{ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}";
                                                 string skipUrlParamsEscape = "";
-                                                var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "urn", urn, "int SharesPerOwner = 1000", sharesPerOwner, "int Count = 50", count, "int Start = 0", start);
+                                                var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "CompanyId", companyId, "ShareId", shareId, "StartTimestamp", startTimestamp, "EndTimestamp", endTimestamp);
 
                                                 var context = new RequestContext();
                                                 context.UserAuthorization = user;
@@ -8879,10 +8879,132 @@ namespace Sparkle.LinkedInNET.Shares
                                                 if (!exec)
                                                     this.HandleJsonErrorResponse(context);
                                                 
-                                                var result = this.HandleJsonResponse<Shares.PostShares>(context);
+                                                var result = this.HandleJsonResponse<Shares.ShareStatistic>(context);
                                                 return result;
                                             }
                                                 
+                                                /// <summary>
+                                                /// Fetch day based share post statistics for two specific organization share posts.
+                                                /// </summary>
+                                                /// <remarks>
+                                                /// See https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/share-statistics
+                                                /// </remarks>
+                                                public Shares.PostStatistic GetSharePostStatisticsPerDay(
+                                                      UserAuthorization user 
+                                                    , string companyId 
+                                                    , string shareId 
+                                                    , string startTimestamp 
+                                                    , string endTimestamp 
+                                                )
+                                                {
+                                                    string urlFormat = "/v2/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:{CompanyId}&shares[0]={ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}";
+                                                    string skipUrlParamsEscape = "";
+                                                    var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "CompanyId", companyId, "ShareId", shareId, "StartTimestamp", startTimestamp, "EndTimestamp", endTimestamp);
+
+                                                    var context = new RequestContext();
+                                                    context.UserAuthorization = user;
+                                                    context.Method =  "GET";
+                                                    context.UrlPath = this.LinkedInApi.Configuration.BaseApiUrl + url;
+
+                                                    if (!this.ExecuteQuery(context))
+                                                        this.HandleJsonErrorResponse(context);
+                                                    
+                                                    var result = this.HandleJsonResponse<Shares.PostStatistic>(context);
+                                                    return result;
+                                                }
+
+                                                    /// <summary>
+                                                    /// Fetch day based share post statistics for two specific organization share posts.
+                                                    /// </summary>
+                                                    /// <remarks>
+                                                    /// See https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/share-statistics
+                                                    /// </remarks>
+                                                    public async Task<Shares.PostStatistic> GetSharePostStatisticsPerDayAsync(
+                                                          UserAuthorization user 
+                                                        , string companyId 
+                                                        , string shareId 
+                                                        , string startTimestamp 
+                                                        , string endTimestamp 
+                                                    )
+                                                    {
+                                                        string urlFormat = "/v2/organizationalEntityShareStatistics?q=organizationalEntity&organizationalEntity=urn:li:organization:{CompanyId}&shares[0]={ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}";
+                                                        string skipUrlParamsEscape = "";
+                                                        var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "CompanyId", companyId, "ShareId", shareId, "StartTimestamp", startTimestamp, "EndTimestamp", endTimestamp);
+
+                                                        var context = new RequestContext();
+                                                        context.UserAuthorization = user;
+                                                        context.Method =  "GET";
+                                                        context.UrlPath = this.LinkedInApi.Configuration.BaseApiUrl + url;
+
+                                                        var exec = await this.ExecuteQueryAsync(context);
+                                                        if (!exec)
+                                                            this.HandleJsonErrorResponse(context);
+                                                        
+                                                        var result = this.HandleJsonResponse<Shares.PostStatistic>(context);
+                                                        return result;
+                                                    }
+                                                        
+                                                        /// <summary>
+                                                        /// Shares will be ordered by created time with the latest one being the first.                   We recommend setting the sharesPerOwner to 1,000 and count to 50, which means our endpoint will return up to 1,000 shares per owner while the total elements returned per response will be 50. If you want the next 50 of 1,000, you will have to paginate with start query parameter.
+                                                        /// </summary>
+                                                        /// <remarks>
+                                                        /// See https://developer.linkedin.com/docs/guide/v2/shares/share-api#types
+                                                        /// </remarks>
+                                                        public Shares.PostShares GetShares(
+                                                              UserAuthorization user 
+                                                            , string urn 
+                                                            , int sharesPerOwner = 1000
+                                                            , int count = 50
+                                                            , int start = 0
+                                                        )
+                                                        {
+                                                            string urlFormat = "/v2/shares?q=owners&owners={urn}&sharesPerOwner={int SharesPerOwner = 1000}&count={int Count = 50}&start={int Start = 0}";
+                                                            string skipUrlParamsEscape = "";
+                                                            var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "urn", urn, "int SharesPerOwner = 1000", sharesPerOwner, "int Count = 50", count, "int Start = 0", start);
+
+                                                            var context = new RequestContext();
+                                                            context.UserAuthorization = user;
+                                                            context.Method =  "GET";
+                                                            context.UrlPath = this.LinkedInApi.Configuration.BaseApiUrl + url;
+
+                                                            if (!this.ExecuteQuery(context))
+                                                                this.HandleJsonErrorResponse(context);
+                                                            
+                                                            var result = this.HandleJsonResponse<Shares.PostShares>(context);
+                                                            return result;
+                                                        }
+
+                                                            /// <summary>
+                                                            /// Shares will be ordered by created time with the latest one being the first.                   We recommend setting the sharesPerOwner to 1,000 and count to 50, which means our endpoint will return up to 1,000 shares per owner while the total elements returned per response will be 50. If you want the next 50 of 1,000, you will have to paginate with start query parameter.
+                                                            /// </summary>
+                                                            /// <remarks>
+                                                            /// See https://developer.linkedin.com/docs/guide/v2/shares/share-api#types
+                                                            /// </remarks>
+                                                            public async Task<Shares.PostShares> GetSharesAsync(
+                                                                  UserAuthorization user 
+                                                                , string urn 
+                                                                , int sharesPerOwner = 1000
+                                                                , int count = 50
+                                                                , int start = 0
+                                                            )
+                                                            {
+                                                                string urlFormat = "/v2/shares?q=owners&owners={urn}&sharesPerOwner={int SharesPerOwner = 1000}&count={int Count = 50}&start={int Start = 0}";
+                                                                string skipUrlParamsEscape = "";
+                                                                var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "urn", urn, "int SharesPerOwner = 1000", sharesPerOwner, "int Count = 50", count, "int Start = 0", start);
+
+                                                                var context = new RequestContext();
+                                                                context.UserAuthorization = user;
+                                                                context.Method =  "GET";
+                                                                context.UrlPath = this.LinkedInApi.Configuration.BaseApiUrl + url;
+
+                                                                var exec = await this.ExecuteQueryAsync(context);
+                                                                if (!exec)
+                                                                    this.HandleJsonErrorResponse(context);
+                                                                
+                                                                var result = this.HandleJsonResponse<Shares.PostShares>(context);
+                                                                return result;
+                                                            }
+                                                                
             }
         }
 

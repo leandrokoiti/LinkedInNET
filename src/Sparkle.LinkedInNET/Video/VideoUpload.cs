@@ -67,7 +67,7 @@ namespace Sparkle.LinkedInNET.Video
                     }
                 }
             };
-            
+
             if (fileSize > VIDEO_MAX_BYTE_SIZE)
             {
                 asset.RegisterUploadRequestData.FileSize = fileSize;
@@ -79,7 +79,7 @@ namespace Sparkle.LinkedInNET.Video
             return requestAsset;
         }
         #endregion
-                     
+
 
         #region Short video upload (< 200Mb)
         private static async Task<string> ShortUploadVideoAsync(LinkedInApi api, RegisterUploadResult registerUpload, byte[] videoData)
@@ -112,7 +112,7 @@ namespace Sparkle.LinkedInNET.Video
             {
                 throw new NullReferenceException("UploadLongVideoAsync param is null", e);
             }
-            
+
             // maybe in a later version we should return the status code as well
             List<string> partsResult = new List<string>();
 
@@ -144,7 +144,7 @@ namespace Sparkle.LinkedInNET.Video
         private static async Task<int> CompletMultiPartVideoAsync(UserAuthorization user, LinkedInApi api, RegisterUploadResult registerUploadResult, List<string> uploadResult)
         {
             var partUploadResponses = new List<PartUploadResponse>();
-            foreach(var uploadRes in uploadResult)
+            foreach (var uploadRes in uploadResult)
             {
                 partUploadResponses.Add(new PartUploadResponse()
                 {

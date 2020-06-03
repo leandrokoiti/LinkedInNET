@@ -450,7 +450,7 @@
                      Remark="See https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/share-statistics" />
 					 
 	<ApiMethod MethodName="GetShareStatisticsPerDay" HttpMethod="GET"
-                     Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]=urn:li:share:{ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}"
+                     Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]=urn:li:share:{ShareId}&amp;timeIntervals.timeGranularityType=DAY&amp;timeIntervals.timeRange.start={StartTimestamp}&amp;timeIntervals.timeRange.end={EndTimestamp}"
                      ReturnType="ShareStatistic"
                      RequiresUserAuthentication="1"
                      UseFieldSelectors="0"
@@ -458,7 +458,7 @@
                      Remark="See https://developer.linkedin.com/docs/guide/v2/organizations/share-statistics" />
 	
 	<ApiMethod MethodName="GetSharePostStatisticsPerDay" HttpMethod="GET"
-                     Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]={ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}"
+                     Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]={ShareId}&amp;timeIntervals.timeGranularityType=DAY&amp;timeIntervals.timeRange.start={StartTimestamp}&amp;timeIntervals.timeRange.end={EndTimestamp}"
                      ReturnType="PostStatistic"
                      RequiresUserAuthentication="1"
                      UseFieldSelectors="0"
