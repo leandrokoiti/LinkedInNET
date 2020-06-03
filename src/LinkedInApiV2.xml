@@ -435,7 +435,7 @@
 
     <ApiMethod MethodName="GetShareStatistics" HttpMethod="GET"
                      Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]=urn:li:share:{ShareId}"
-                     ReturnType="StareStatistic"
+                     ReturnType="ShareStatistic"
                      RequiresUserAuthentication="1"
                      UseFieldSelectors="0"
                      Title="Fetch lifetime share statistics for two specific organization shares."
@@ -448,6 +448,22 @@
                      UseFieldSelectors="0"
                      Title="Fetch lifetime share post statistics for two specific organization share posts."
                      Remark="See https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/share-statistics" />
+					 
+	<ApiMethod MethodName="GetShareStatisticsPerDay" HttpMethod="GET"
+                     Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]=urn:li:share:{ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}"
+                     ReturnType="ShareStatistic"
+                     RequiresUserAuthentication="1"
+                     UseFieldSelectors="0"
+                     Title="Fetch day based share statistics for two specific organization shares."
+                     Remark="See https://developer.linkedin.com/docs/guide/v2/organizations/share-statistics" />
+	
+	<ApiMethod MethodName="GetSharePostStatisticsPerDay" HttpMethod="GET"
+                     Path="/v2/organizationalEntityShareStatistics?q=organizationalEntity&amp;organizationalEntity=urn:li:organization:{CompanyId}&amp;shares[0]={ShareId}&timeIntervals.timeGranularityType=DAY&timeIntervals.timeRange.start={StartTimestamp}&timeIntervals.timeRange.end={EndTimestamp}"
+                     ReturnType="PostStatistic"
+                     RequiresUserAuthentication="1"
+                     UseFieldSelectors="0"
+                     Title="Fetch day based share post statistics for two specific organization share posts."
+                     Remark="See https://docs.microsoft.com/en-us/linkedin/marketing/integrations/community-management/organizations/share-statistics" />
 
     <ApiMethod MethodName="GetShares" HttpMethod="GET"
                  Path="/v2/shares?q=owners&amp;owners={urn}&amp;sharesPerOwner={int SharesPerOwner = 1000}&amp;count={int Count = 50}&amp;start={int Start = 0}"
@@ -458,7 +474,7 @@
                  We recommend setting the sharesPerOwner to 1,000 and count to 50, which means our endpoint will return up to 1,000 shares per owner while the total elements returned per response will be 50. If you want the next 50 of 1,000, you will have to paginate with start query parameter."
                  Remark="See https://developer.linkedin.com/docs/guide/v2/shares/share-api#types" />
 
-    <ReturnType Name="StareStatistic" ClassName="StareStatistic" AutoGenerateFieldSelectors="1">
+    <ReturnType Name="ShareStatistic" ClassName="ShareStatistic" AutoGenerateFieldSelectors="1">
       <Field Name="elements" ClassName="ShareStatisticsElement" Type="ShareStatisticsElement" IsCollection="1"/>
     </ReturnType>
     
