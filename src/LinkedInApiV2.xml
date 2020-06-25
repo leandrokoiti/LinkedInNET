@@ -1471,7 +1471,7 @@
     
     <ApiMethod MethodName="GetAdSharePostAnalytics"
              HttpMethod="GET"
-             Path="/v2/adAnalyticsV2?q=statistics&amp;pivots[0]=SHARE&amp;dateRange.start.day=&#34; + DateTime.Now.Day + &#34;&amp;dateRange.start.month=&#34; + DateTime.Now.Month + &#34;&amp;dateRange.start.year=&#34; + DateTime.Now.Year + &#34;&amp;timeGranularity=DAILY&amp;fields=follows,likes,comments,clicks,shares,otherEngagements,totalEngagements,impressions,companyPageClicks,landingPageClicks&amp;shares[0]={postId}"
+             Path="/v2/adAnalyticsV2?q=statistics&amp;pivots[0]=SHARE&amp;dateRange.start.day=&#34; + DateTime.Now.Day + &#34;&amp;dateRange.start.month=&#34; + DateTime.Now.Month + &#34;&amp;dateRange.start.year=&#34; + DateTime.Now.Year + &#34;&amp;timeGranularity=DAILY&amp;fields=follows,likes,comments,clicks,actionClicks,adUnitClicks,shares,otherEngagements,totalEngagements,impressions,companyPageClicks,landingPageClicks,viralImpressions,viralTotalEngagements&amp;shares[0]={postId}"
              ReturnType="AdAnalytics"
              RequiresUserAuthentication="1"
              UseFieldSelectors="0"/>
@@ -1482,17 +1482,21 @@
     </ReturnType>
 
     <ReturnType Name="AdAnalyticsElement" ClassName="AdAnalyticsElement" AutoGenerateFieldSelectors="1">
+      <Field Name="actionClicks" Type="int"/>
+      <Field Name="adUnitClicks" Type="int"/>
       <Field Name="clicks" Type="int"/>
-      <Field Name="comments" Type="int"/>
       <Field Name="companyPageClicks" Type="int"/>
+      <Field Name="landingPageClicks" Type="int"/>
+      <Field Name="comments" Type="int"/>
       <Field Name="dateRange" ClassName="DateRange" Type="DateRange"/>
       <Field Name="follows" Type="int"/>
-      <Field Name="impressions" Type="int"/>
-      <Field Name="landingPageClicks" Type="int"/>
-      <Field Name="likes" Type="int"/>
-      <Field Name="otherEngagements" Type="int"/>
       <Field Name="shares" Type="int"/>
+      <Field Name="likes" Type="int"/>
       <Field Name="totalEngagements" Type="int"/>
+      <Field Name="otherEngagements" Type="int"/>
+      <Field Name="impressions" Type="int"/>
+      <Field Name="viralImpressions" Type="int"/>
+      <Field Name="viralTotalEngagements" Type="int"/>
     </ReturnType>
 
     <ReturnType Name="End" ClassName="End" AutoGenerateFieldSelectors="1">
