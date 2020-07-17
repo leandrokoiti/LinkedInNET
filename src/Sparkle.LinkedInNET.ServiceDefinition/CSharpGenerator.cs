@@ -478,7 +478,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                     text.WriteLine(indent, @"            
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues(""eTag"");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('""').TrimStart('""');
@@ -490,7 +490,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                     text.WriteLine(indent, @"            
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues(""X-RestLi-Id"");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('""').TrimStart('""');
@@ -642,7 +642,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                     text.WriteLine(indent, @"            
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues(""eTag"");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('""').TrimStart('""');
@@ -654,7 +654,7 @@ namespace Sparkle.LinkedInNET.ServiceDefinition
                     text.WriteLine(indent, @"            
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues(""X-RestLi-Id"");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('""').TrimStart('""');

@@ -22,6 +22,7 @@
     using Sparkle.LinkedInNET.DemoMvc5.Utils;
     using Sparkle.LinkedInNET.SocialActions;
     using Sparkle.LinkedInNET.UGCPost;
+    using Sparkle.LinkedInNET.Video;
 
     ////using Sparkle.LinkedInNET.ServiceDefinition;
 
@@ -59,8 +60,8 @@
             {
                 this.ViewBag.Url = null;
             }
-                        
-            var accessToken = "";
+
+            var accessToken = "";            
             this.data.SaveAccessToken(accessToken);
 
 
@@ -86,15 +87,15 @@
                     //await GetComemnt(user);
                     // await GetPost(user);
                     // await GetPosts(user);
-                    // await GetVideo(user);
+                    //await GetVideo(user);
                     //await PublishImage(user);
-                    //await PublishTest();
+                    await PublishTest(user);
 
 
                     // var originalPicture = await this.api.Profiles.GetOriginalProfilePictureAsync(user);
                     // this.ViewBag.Picture = originalPicture;
 
-                    this.ViewBag.Profile = profile;
+                    //this.ViewBag.Profile = profile;
                 }
                 catch (LinkedInApiException ex)
                 {
@@ -301,8 +302,7 @@
             //var test = "sss";
 
 
-
-
+             var mediaUrl = await UploadVideo(user);
 
             // video test
             var ugcPost = new UGCPost.UGCPostData()
@@ -323,7 +323,7 @@
                                         {
                                             Text = "test description"
                                         },
-                                        Media = "urn:li:digitalmediaAsset:C4D05AQGYz5sONvv20g",// requestAsset.Value.Asset, // "urn:li:digitalmediaAsset:C4D05AQHwsp8DLpxHiA", // "urn:li:digitalmediaAsset:C5500AQG7r2u00ByWjw",
+                                        Media = mediaUrl,// requestAsset.Value.Asset, // "urn:li:digitalmediaAsset:C4D05AQHwsp8DLpxHiA", // "urn:li:digitalmediaAsset:C5500AQG7r2u00ByWjw",
                                         Status = "READY",
                                         // Thumbnails = new List<string>(),
                                         UGCMediaTitle = new UGCPost.UGCText()
@@ -334,7 +334,7 @@
                                 },
                         ShareCommentary = new UGCPost.UGCText()
                         {
-                            Text = "Test Commentary"
+                            Text = "Test Commentary 111"
                         },
                         ShareMediaCategory = "VIDEO"
                     }
@@ -351,7 +351,7 @@
 
             var ugcPostResult = await this.api.UGCPost.PostAsync(user, ugcPost);
 
-            var test2 = "sdfas";
+            //var test2 = "sdfas";
 
 
 
@@ -454,6 +454,17 @@
             });
         }
 
+        private async Task<string> UploadVideo(UserAuthorization user)
+        {
+            var videoUrl = "https://diricostorage.blob.core.windows.net/48131979-e14a-47c4-bf19-e02bb7226732/cb07d670-6fc8-410f-b21e-3456a284f523/4cf54e39-afdb-47b1-bf7d-020464985554/8b896ee0-d73d-48bc-bc92-60ce09407028/data";
+            var videoData = await ImageUtils.PrepareImageFromUrl(videoUrl, 10485760);
+
+            var ownerUrn = "urn:li:organization:18568129";
+            var videoUploadUrn = await VideoUpload.UploadVideoAsync(api, user, ownerUrn, videoData);
+            
+            return videoUploadUrn;            
+        }
+
         private async Task GetComemnt(UserAuthorization user)
         {
             try
@@ -499,8 +510,8 @@
         }
         private async Task GetVideo(UserAuthorization user)
         {
-            var videoId = "urn:li:digitalmediaAsset:C4E05AQHDEiyF00wWkQ"; // video post on Horvath janos zrt            
-            var postId = "urn:li:ugcPost:6650705316675665920"; // video post on Horvath janos zrt.
+            var videoId = "urn:li:digitalmediaAsset:C4E05AQHDEiyF00wWkQ"; // video post on Horvath janos zrt
+            var postId = "urn:li:ugcPost:6650705316675665920"; // video post on Horvath janos zrt.            
             var video = await this.api.UGCPost.GetUGCVideoAsync(user, postId);
             var mediaElements = video.SpecificContent.ComLinkedinUgcVideoContent.UGCMedia[0].mediaData.Elements;
 
@@ -516,7 +527,7 @@
 
         private async Task GetPosts(UserAuthorization user)
         {
-            var pageId = "urn:li:organization:18568129"; // Horvath janos zrt.
+            var pageId = "urn:li:organization:18568129"; // Horvath janos zrt.            
             var post = await this.api.UGCPost.GetUGCPostsAsync(user, pageId, 0, 5);
             // await DeletePost(user, post.Elements.Last());
         }

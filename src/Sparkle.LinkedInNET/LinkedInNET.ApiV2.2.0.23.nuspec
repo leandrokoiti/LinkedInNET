@@ -1,0 +1,25 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2011/08/nuspec.xsd">
+  <metadata>
+    <id>LinkedInNET.ApiV2</id>
+    <version>2.0.23</version>
+    <title>LinkedInNET.ApiV2</title>
+    <authors>Sparkle Networks,SandRock,Tazacban,Andrew Clark,Rayyan Tahir,Levente Oláh,Marina Rukavitsyna,Patrick Schäfer</authors>
+    <owners>Sparkle Networks,SandRock,Tazacban,Andrew Clark,Rayyan Tahir,Levente Oláh,Marina Rukavitsyna,Patrick Schäfer</owners>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <licenseUrl>https://github.com/247GradLabs/LinkedInNET/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/247GradLabs/LinkedInNET</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/247GradLabs/LinkedInNET/master/src/LiNET-200.png</iconUrl>
+    <description>Updated to .net framework 4.7.2</description>
+    <releaseNotes>Updated scopes</releaseNotes>
+    <copyright></copyright>
+    <tags>LinkedIn API social</tags>
+    <dependencies>
+      <dependency id="System.Net.Http" version="2.2.29" />
+      <dependency id="Newtonsoft.Json" version="12.0.2" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="obj\Release\LinkedInNET.ApiV2.dll" target="lib/net472" />
+  </files>
+</package>

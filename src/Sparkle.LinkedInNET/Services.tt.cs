@@ -7170,81 +7170,11 @@ namespace Sparkle.LinkedInNET.Ads
         public int Clicks { get; set; }
 
         /// <summary>
-        /// Field: 'comments' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "comments")]
-        [JsonProperty(PropertyName = "comments")]
-        public int Comments { get; set; }
-
-        /// <summary>
         /// Field: 'companyPageClicks' (on-demand)
         /// </summary>
         [XmlElement(ElementName = "companyPageClicks")]
         [JsonProperty(PropertyName = "companyPageClicks")]
         public int CompanyPageClicks { get; set; }
-
-        /// <summary>
-        /// Field: 'conversionValueInLocalCurrency' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "conversionValueInLocalCurrency")]
-        [JsonProperty(PropertyName = "conversionValueInLocalCurrency")]
-        public string ConversionValueInLocalCurrency { get; set; }
-
-        /// <summary>
-        /// Field: 'costInLocalCurrency' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "costInLocalCurrency")]
-        [JsonProperty(PropertyName = "costInLocalCurrency")]
-        public string CostInLocalCurrency { get; set; }
-
-        /// <summary>
-        /// Field: 'costInUsd' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "costInUsd")]
-        [JsonProperty(PropertyName = "costInUsd")]
-        public string CostInUsd { get; set; }
-
-        /// <summary>
-        /// Field: 'dateRange' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "dateRange")]
-        [JsonProperty(PropertyName = "dateRange")]
-        public DateRange DateRange { get; set; }
-
-        /// <summary>
-        /// Field: 'externalWebsiteConversions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "externalWebsiteConversions")]
-        [JsonProperty(PropertyName = "externalWebsiteConversions")]
-        public int ExternalWebsiteConversions { get; set; }
-
-        /// <summary>
-        /// Field: 'externalWebsitePostClickConversions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "externalWebsitePostClickConversions")]
-        [JsonProperty(PropertyName = "externalWebsitePostClickConversions")]
-        public int ExternalWebsitePostClickConversions { get; set; }
-
-        /// <summary>
-        /// Field: 'externalWebsitePostViewConversions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "externalWebsitePostViewConversions")]
-        [JsonProperty(PropertyName = "externalWebsitePostViewConversions")]
-        public int ExternalWebsitePostViewConversions { get; set; }
-
-        /// <summary>
-        /// Field: 'follows' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "follows")]
-        [JsonProperty(PropertyName = "follows")]
-        public int Follows { get; set; }
-
-        /// <summary>
-        /// Field: 'impressions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "impressions")]
-        [JsonProperty(PropertyName = "impressions")]
-        public int Impressions { get; set; }
 
         /// <summary>
         /// Field: 'landingPageClicks' (on-demand)
@@ -7254,74 +7184,25 @@ namespace Sparkle.LinkedInNET.Ads
         public int LandingPageClicks { get; set; }
 
         /// <summary>
-        /// Field: 'leadGenerationMailContactInfoShares' (on-demand)
+        /// Field: 'comments' (on-demand)
         /// </summary>
-        [XmlElement(ElementName = "leadGenerationMailContactInfoShares")]
-        [JsonProperty(PropertyName = "leadGenerationMailContactInfoShares")]
-        public int LeadGenerationMailContactInfoShares { get; set; }
+        [XmlElement(ElementName = "comments")]
+        [JsonProperty(PropertyName = "comments")]
+        public int Comments { get; set; }
 
         /// <summary>
-        /// Field: 'leadGenerationMailInterestedClicks' (on-demand)
+        /// Field: 'dateRange' (on-demand)
         /// </summary>
-        [XmlElement(ElementName = "leadGenerationMailInterestedClicks")]
-        [JsonProperty(PropertyName = "leadGenerationMailInterestedClicks")]
-        public int LeadGenerationMailInterestedClicks { get; set; }
+        [XmlElement(ElementName = "dateRange")]
+        [JsonProperty(PropertyName = "dateRange")]
+        public DateRange DateRange { get; set; }
 
         /// <summary>
-        /// Field: 'likes' (on-demand)
+        /// Field: 'follows' (on-demand)
         /// </summary>
-        [XmlElement(ElementName = "likes")]
-        [JsonProperty(PropertyName = "likes")]
-        public int Likes { get; set; }
-
-        /// <summary>
-        /// Field: 'oneClickLeadFormOpens' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "oneClickLeadFormOpens")]
-        [JsonProperty(PropertyName = "oneClickLeadFormOpens")]
-        public int OneClickLeadFormOpens { get; set; }
-
-        /// <summary>
-        /// Field: 'oneClickLeads' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "oneClickLeads")]
-        [JsonProperty(PropertyName = "oneClickLeads")]
-        public int OneClickLeads { get; set; }
-
-        /// <summary>
-        /// Field: 'opens' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "opens")]
-        [JsonProperty(PropertyName = "opens")]
-        public int Opens { get; set; }
-
-        /// <summary>
-        /// Field: 'otherEngagements' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "otherEngagements")]
-        [JsonProperty(PropertyName = "otherEngagements")]
-        public int OtherEngagements { get; set; }
-
-        /// <summary>
-        /// Field: 'pivot' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "pivot")]
-        [JsonProperty(PropertyName = "pivot")]
-        public string Pivot { get; set; }
-
-        /// <summary>
-        /// Field: 'pivotValue' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "pivotValue")]
-        [JsonProperty(PropertyName = "pivotValue")]
-        public string PivotValue { get; set; }
-
-        /// <summary>
-        /// Field: 'pivotValues' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "pivotValues")]
-        [JsonProperty(PropertyName = "pivotValues")]
-        public List<string> PivotValues { get; set; }
+        [XmlElement(ElementName = "follows")]
+        [JsonProperty(PropertyName = "follows")]
+        public int Follows { get; set; }
 
         /// <summary>
         /// Field: 'shares' (on-demand)
@@ -7331,11 +7212,11 @@ namespace Sparkle.LinkedInNET.Ads
         public int Shares { get; set; }
 
         /// <summary>
-        /// Field: 'textUrlClicks' (on-demand)
+        /// Field: 'likes' (on-demand)
         /// </summary>
-        [XmlElement(ElementName = "textUrlClicks")]
-        [JsonProperty(PropertyName = "textUrlClicks")]
-        public int TextUrlClicks { get; set; }
+        [XmlElement(ElementName = "likes")]
+        [JsonProperty(PropertyName = "likes")]
+        public int Likes { get; set; }
 
         /// <summary>
         /// Field: 'totalEngagements' (on-demand)
@@ -7345,53 +7226,18 @@ namespace Sparkle.LinkedInNET.Ads
         public int TotalEngagements { get; set; }
 
         /// <summary>
-        /// Field: 'viralClicks' (on-demand)
+        /// Field: 'otherEngagements' (on-demand)
         /// </summary>
-        [XmlElement(ElementName = "viralClicks")]
-        [JsonProperty(PropertyName = "viralClicks")]
-        public int ViralClicks { get; set; }
+        [XmlElement(ElementName = "otherEngagements")]
+        [JsonProperty(PropertyName = "otherEngagements")]
+        public int OtherEngagements { get; set; }
 
         /// <summary>
-        /// Field: 'viralComments' (on-demand)
+        /// Field: 'impressions' (on-demand)
         /// </summary>
-        [XmlElement(ElementName = "viralComments")]
-        [JsonProperty(PropertyName = "viralComments")]
-        public int ViralComments { get; set; }
-
-        /// <summary>
-        /// Field: 'viralCompanyPageClicks' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralCompanyPageClicks")]
-        [JsonProperty(PropertyName = "viralCompanyPageClicks")]
-        public int ViralCompanyPageClicks { get; set; }
-
-        /// <summary>
-        /// Field: 'viralExternalWebsiteConversions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralExternalWebsiteConversions")]
-        [JsonProperty(PropertyName = "viralExternalWebsiteConversions")]
-        public int ViralExternalWebsiteConversions { get; set; }
-
-        /// <summary>
-        /// Field: 'viralExternalWebsitePostClickConversions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralExternalWebsitePostClickConversions")]
-        [JsonProperty(PropertyName = "viralExternalWebsitePostClickConversions")]
-        public int ViralExternalWebsitePostClickConversions { get; set; }
-
-        /// <summary>
-        /// Field: 'viralExternalWebsitePostViewConversions' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralExternalWebsitePostViewConversions")]
-        [JsonProperty(PropertyName = "viralExternalWebsitePostViewConversions")]
-        public int ViralExternalWebsitePostViewConversions { get; set; }
-
-        /// <summary>
-        /// Field: 'viralFollows' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralFollows")]
-        [JsonProperty(PropertyName = "viralFollows")]
-        public int ViralFollows { get; set; }
+        [XmlElement(ElementName = "impressions")]
+        [JsonProperty(PropertyName = "impressions")]
+        public int Impressions { get; set; }
 
         /// <summary>
         /// Field: 'viralImpressions' (on-demand)
@@ -7399,48 +7245,6 @@ namespace Sparkle.LinkedInNET.Ads
         [XmlElement(ElementName = "viralImpressions")]
         [JsonProperty(PropertyName = "viralImpressions")]
         public int ViralImpressions { get; set; }
-
-        /// <summary>
-        /// Field: 'viralLandingPageClicks' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralLandingPageClicks")]
-        [JsonProperty(PropertyName = "viralLandingPageClicks")]
-        public int ViralLandingPageClicks { get; set; }
-
-        /// <summary>
-        /// Field: 'viralLikes' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralLikes")]
-        [JsonProperty(PropertyName = "viralLikes")]
-        public int ViralLikes { get; set; }
-
-        /// <summary>
-        /// Field: 'viralOneClickLeadFormOpens' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralOneClickLeadFormOpens")]
-        [JsonProperty(PropertyName = "viralOneClickLeadFormOpens")]
-        public int ViralOneClickLeadFormOpens { get; set; }
-
-        /// <summary>
-        /// Field: 'viralOneClickLeads' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralOneClickLeads")]
-        [JsonProperty(PropertyName = "viralOneClickLeads")]
-        public int ViralOneClickLeads { get; set; }
-
-        /// <summary>
-        /// Field: 'viralOtherEngagements' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralOtherEngagements")]
-        [JsonProperty(PropertyName = "viralOtherEngagements")]
-        public int ViralOtherEngagements { get; set; }
-
-        /// <summary>
-        /// Field: 'viralShares' (on-demand)
-        /// </summary>
-        [XmlElement(ElementName = "viralShares")]
-        [JsonProperty(PropertyName = "viralShares")]
-        public int ViralShares { get; set; }
 
         /// <summary>
         /// Field: 'viralTotalEngagements' (on-demand)
@@ -7616,81 +7420,11 @@ namespace Sparkle.LinkedInNET.Ads
         public static FieldSelector<AdAnalyticsElement> WithClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("clicks"); }
         
         /// <summary>
-        /// Includes the field 'comments'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithComments(this FieldSelector<AdAnalyticsElement> me) { return me.Add("comments"); }
-        
-        /// <summary>
         /// Includes the field 'companyPageClicks'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
         public static FieldSelector<AdAnalyticsElement> WithCompanyPageClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("companyPageClicks"); }
-        
-        /// <summary>
-        /// Includes the field 'conversionValueInLocalCurrency'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithConversionValueInLocalCurrency(this FieldSelector<AdAnalyticsElement> me) { return me.Add("conversionValueInLocalCurrency"); }
-        
-        /// <summary>
-        /// Includes the field 'costInLocalCurrency'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithCostInLocalCurrency(this FieldSelector<AdAnalyticsElement> me) { return me.Add("costInLocalCurrency"); }
-        
-        /// <summary>
-        /// Includes the field 'costInUsd'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithCostInUsd(this FieldSelector<AdAnalyticsElement> me) { return me.Add("costInUsd"); }
-        
-        /// <summary>
-        /// Includes the field 'dateRange'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithDateRange(this FieldSelector<AdAnalyticsElement> me) { return me.Add("dateRange"); }
-        
-        /// <summary>
-        /// Includes the field 'externalWebsiteConversions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithExternalWebsiteConversions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("externalWebsiteConversions"); }
-        
-        /// <summary>
-        /// Includes the field 'externalWebsitePostClickConversions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithExternalWebsitePostClickConversions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("externalWebsitePostClickConversions"); }
-        
-        /// <summary>
-        /// Includes the field 'externalWebsitePostViewConversions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithExternalWebsitePostViewConversions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("externalWebsitePostViewConversions"); }
-        
-        /// <summary>
-        /// Includes the field 'follows'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithFollows(this FieldSelector<AdAnalyticsElement> me) { return me.Add("follows"); }
-        
-        /// <summary>
-        /// Includes the field 'impressions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithImpressions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("impressions"); }
         
         /// <summary>
         /// Includes the field 'landingPageClicks'.
@@ -7700,74 +7434,25 @@ namespace Sparkle.LinkedInNET.Ads
         public static FieldSelector<AdAnalyticsElement> WithLandingPageClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("landingPageClicks"); }
         
         /// <summary>
-        /// Includes the field 'leadGenerationMailContactInfoShares'.
+        /// Includes the field 'comments'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithLeadGenerationMailContactInfoShares(this FieldSelector<AdAnalyticsElement> me) { return me.Add("leadGenerationMailContactInfoShares"); }
+        public static FieldSelector<AdAnalyticsElement> WithComments(this FieldSelector<AdAnalyticsElement> me) { return me.Add("comments"); }
         
         /// <summary>
-        /// Includes the field 'leadGenerationMailInterestedClicks'.
+        /// Includes the field 'dateRange'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithLeadGenerationMailInterestedClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("leadGenerationMailInterestedClicks"); }
+        public static FieldSelector<AdAnalyticsElement> WithDateRange(this FieldSelector<AdAnalyticsElement> me) { return me.Add("dateRange"); }
         
         /// <summary>
-        /// Includes the field 'likes'.
+        /// Includes the field 'follows'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithLikes(this FieldSelector<AdAnalyticsElement> me) { return me.Add("likes"); }
-        
-        /// <summary>
-        /// Includes the field 'oneClickLeadFormOpens'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithOneClickLeadFormOpens(this FieldSelector<AdAnalyticsElement> me) { return me.Add("oneClickLeadFormOpens"); }
-        
-        /// <summary>
-        /// Includes the field 'oneClickLeads'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithOneClickLeads(this FieldSelector<AdAnalyticsElement> me) { return me.Add("oneClickLeads"); }
-        
-        /// <summary>
-        /// Includes the field 'opens'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithOpens(this FieldSelector<AdAnalyticsElement> me) { return me.Add("opens"); }
-        
-        /// <summary>
-        /// Includes the field 'otherEngagements'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithOtherEngagements(this FieldSelector<AdAnalyticsElement> me) { return me.Add("otherEngagements"); }
-        
-        /// <summary>
-        /// Includes the field 'pivot'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithPivot(this FieldSelector<AdAnalyticsElement> me) { return me.Add("pivot"); }
-        
-        /// <summary>
-        /// Includes the field 'pivotValue'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithPivotValue(this FieldSelector<AdAnalyticsElement> me) { return me.Add("pivotValue"); }
-        
-        /// <summary>
-        /// Includes the field 'pivotValues'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithPivotValues(this FieldSelector<AdAnalyticsElement> me) { return me.Add("pivotValues"); }
+        public static FieldSelector<AdAnalyticsElement> WithFollows(this FieldSelector<AdAnalyticsElement> me) { return me.Add("follows"); }
         
         /// <summary>
         /// Includes the field 'shares'.
@@ -7777,11 +7462,11 @@ namespace Sparkle.LinkedInNET.Ads
         public static FieldSelector<AdAnalyticsElement> WithShares(this FieldSelector<AdAnalyticsElement> me) { return me.Add("shares"); }
         
         /// <summary>
-        /// Includes the field 'textUrlClicks'.
+        /// Includes the field 'likes'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithTextUrlClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("textUrlClicks"); }
+        public static FieldSelector<AdAnalyticsElement> WithLikes(this FieldSelector<AdAnalyticsElement> me) { return me.Add("likes"); }
         
         /// <summary>
         /// Includes the field 'totalEngagements'.
@@ -7791,53 +7476,18 @@ namespace Sparkle.LinkedInNET.Ads
         public static FieldSelector<AdAnalyticsElement> WithTotalEngagements(this FieldSelector<AdAnalyticsElement> me) { return me.Add("totalEngagements"); }
         
         /// <summary>
-        /// Includes the field 'viralClicks'.
+        /// Includes the field 'otherEngagements'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralClicks"); }
+        public static FieldSelector<AdAnalyticsElement> WithOtherEngagements(this FieldSelector<AdAnalyticsElement> me) { return me.Add("otherEngagements"); }
         
         /// <summary>
-        /// Includes the field 'viralComments'.
+        /// Includes the field 'impressions'.
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralComments(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralComments"); }
-        
-        /// <summary>
-        /// Includes the field 'viralCompanyPageClicks'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralCompanyPageClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralCompanyPageClicks"); }
-        
-        /// <summary>
-        /// Includes the field 'viralExternalWebsiteConversions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralExternalWebsiteConversions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralExternalWebsiteConversions"); }
-        
-        /// <summary>
-        /// Includes the field 'viralExternalWebsitePostClickConversions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralExternalWebsitePostClickConversions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralExternalWebsitePostClickConversions"); }
-        
-        /// <summary>
-        /// Includes the field 'viralExternalWebsitePostViewConversions'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralExternalWebsitePostViewConversions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralExternalWebsitePostViewConversions"); }
-        
-        /// <summary>
-        /// Includes the field 'viralFollows'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralFollows(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralFollows"); }
+        public static FieldSelector<AdAnalyticsElement> WithImpressions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("impressions"); }
         
         /// <summary>
         /// Includes the field 'viralImpressions'.
@@ -7845,48 +7495,6 @@ namespace Sparkle.LinkedInNET.Ads
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
         public static FieldSelector<AdAnalyticsElement> WithViralImpressions(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralImpressions"); }
-        
-        /// <summary>
-        /// Includes the field 'viralLandingPageClicks'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralLandingPageClicks(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralLandingPageClicks"); }
-        
-        /// <summary>
-        /// Includes the field 'viralLikes'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralLikes(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralLikes"); }
-        
-        /// <summary>
-        /// Includes the field 'viralOneClickLeadFormOpens'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralOneClickLeadFormOpens(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralOneClickLeadFormOpens"); }
-        
-        /// <summary>
-        /// Includes the field 'viralOneClickLeads'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralOneClickLeads(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralOneClickLeads"); }
-        
-        /// <summary>
-        /// Includes the field 'viralOtherEngagements'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralOtherEngagements(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralOtherEngagements"); }
-        
-        /// <summary>
-        /// Includes the field 'viralShares'.
-        /// </summary>
-        /// <param name="me">The field selector.</param>
-        /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithViralShares(this FieldSelector<AdAnalyticsElement> me) { return me.Add("viralShares"); }
         
         /// <summary>
         /// Includes the field 'viralTotalEngagements'.
@@ -7900,7 +7508,7 @@ namespace Sparkle.LinkedInNET.Ads
         /// </summary>
         /// <param name="me">The field selector.</param>
         /// <returns>The field selector.</returns>
-        public static FieldSelector<AdAnalyticsElement> WithAllFields(this FieldSelector<AdAnalyticsElement> me) { return me.AddRange("actionClicks", "adUnitClicks", "clicks", "comments", "companyPageClicks", "conversionValueInLocalCurrency", "costInLocalCurrency", "costInUsd", "dateRange", "externalWebsiteConversions", "externalWebsitePostClickConversions", "externalWebsitePostViewConversions", "follows", "impressions", "landingPageClicks", "leadGenerationMailContactInfoShares", "leadGenerationMailInterestedClicks", "likes", "oneClickLeadFormOpens", "oneClickLeads", "opens", "otherEngagements", "pivot", "pivotValue", "pivotValues", "shares", "textUrlClicks", "totalEngagements", "viralClicks", "viralComments", "viralCompanyPageClicks", "viralExternalWebsiteConversions", "viralExternalWebsitePostClickConversions", "viralExternalWebsitePostViewConversions", "viralFollows", "viralImpressions", "viralLandingPageClicks", "viralLikes", "viralOneClickLeadFormOpens", "viralOneClickLeads", "viralOtherEngagements", "viralShares", "viralTotalEngagements"); }
+        public static FieldSelector<AdAnalyticsElement> WithAllFields(this FieldSelector<AdAnalyticsElement> me) { return me.AddRange("actionClicks", "adUnitClicks", "clicks", "companyPageClicks", "landingPageClicks", "comments", "dateRange", "follows", "shares", "likes", "totalEngagements", "otherEngagements", "impressions", "viralImpressions", "viralTotalEngagements"); }
         
         /// <summary>
         /// Includes the field 'day'.
@@ -9211,7 +8819,7 @@ namespace Sparkle.LinkedInNET.UGCPost
                                 
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues("X-RestLi-Id");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('"').TrimStart('"');
@@ -9245,7 +8853,7 @@ namespace Sparkle.LinkedInNET.UGCPost
                                     
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues("X-RestLi-Id");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('"').TrimStart('"');
@@ -10310,7 +9918,7 @@ namespace Sparkle.LinkedInNET.Asset
                                         
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues("eTag");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('"').TrimStart('"');
@@ -10345,7 +9953,7 @@ namespace Sparkle.LinkedInNET.Asset
                                             
                         var result = string.Empty;
                         var headerETag = context.ResponseHeaders.GetValues("eTag");
-                        if (headerETag.Length > 0)
+                        if (headerETag != null && headerETag.Length > 0)
                         {
                             result = headerETag.First();
                             result = result.TrimEnd('"').TrimStart('"');
@@ -11430,7 +11038,7 @@ namespace Sparkle.LinkedInNET.Ads
                             , string postId 
                         )
                         {
-                            string urlFormat = "/v2/adAnalyticsV2?q=statistics&pivots[0]=SHARE&dateRange.start.day=" + DateTime.Now.Day + "&dateRange.start.month=" + DateTime.Now.Month + "&dateRange.start.year=" + DateTime.Now.Year + "&timeGranularity=DAILY&shares[0]={postId}";
+                            string urlFormat = "/v2/adAnalyticsV2?q=statistics&pivots[0]=SHARE&dateRange.start.day=" + DateTime.Now.Day + "&dateRange.start.month=" + DateTime.Now.Month + "&dateRange.start.year=" + DateTime.Now.Year + "&timeGranularity=DAILY&fields=follows,likes,comments,clicks,actionClicks,adUnitClicks,shares,otherEngagements,totalEngagements,impressions,companyPageClicks,landingPageClicks,viralImpressions,viralTotalEngagements&shares[0]={postId}";
                             string skipUrlParamsEscape = "";
                             var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "postId", postId);
 
@@ -11454,7 +11062,7 @@ namespace Sparkle.LinkedInNET.Ads
                                 , string postId 
                             )
                             {
-                                string urlFormat = "/v2/adAnalyticsV2?q=statistics&pivots[0]=SHARE&dateRange.start.day=" + DateTime.Now.Day + "&dateRange.start.month=" + DateTime.Now.Month + "&dateRange.start.year=" + DateTime.Now.Year + "&timeGranularity=DAILY&shares[0]={postId}";
+                                string urlFormat = "/v2/adAnalyticsV2?q=statistics&pivots[0]=SHARE&dateRange.start.day=" + DateTime.Now.Day + "&dateRange.start.month=" + DateTime.Now.Month + "&dateRange.start.year=" + DateTime.Now.Year + "&timeGranularity=DAILY&fields=follows,likes,comments,clicks,actionClicks,adUnitClicks,shares,otherEngagements,totalEngagements,impressions,companyPageClicks,landingPageClicks,viralImpressions,viralTotalEngagements&shares[0]={postId}";
                                 string skipUrlParamsEscape = "";
                                 var url = FormatUrl(urlFormat, default(FieldSelector), skipUrlParamsEscape, "postId", postId);
 
