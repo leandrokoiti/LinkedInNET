@@ -5942,7 +5942,7 @@ namespace Sparkle.LinkedInNET.Common
         /// </summary>
         [XmlElement(ElementName = "externalDistributionChannels")]
         [JsonProperty(PropertyName = "externalDistributionChannels")]
-        public List<string> ExternalDistributionChannels { get; set; }
+        public List<ExternalDistributionChannels> ExternalDistributionChannels { get; set; }
 
         /// <summary>
         /// Field: 'distributedViaFollowFeed' (on-demand)
@@ -6294,6 +6294,31 @@ namespace Sparkle.LinkedInNET.Common
     }
 }
 
+// WriteReturnTypes(Common, ExternalDistributionChannels)
+namespace Sparkle.LinkedInNET.Common
+{
+    using System;
+    using System.Collections.Generic;
+    using System.Xml.Serialization;
+    using Newtonsoft.Json;
+    using Newtonsoft.Json.Linq;
+
+    /// <summary>
+    /// Name: 'ExternalDistributionChannels'
+    /// </summary>
+    [Serializable, XmlRoot("ExternalDistributionChannels")]
+    public class ExternalDistributionChannels
+    {
+        /// <summary>
+        /// Field: 'externalDistributionChannelType' (on-demand)
+        /// </summary>
+        [XmlElement(ElementName = "externalDistributionChannelType")]
+        [JsonProperty(PropertyName = "externalDistributionChannelType")]
+        public string ExternalDistributionChannelType { get; set; }
+
+    }
+}
+
 // WriteReturnTypeFields(Common)
 namespace Sparkle.LinkedInNET.Common
 {
@@ -6302,7 +6327,7 @@ namespace Sparkle.LinkedInNET.Common
     using System.Xml.Serialization;
 
     /// <summary>
-    /// Field selectors for the 'PostShare', 'text', 'postShareAnnotations', 'postShareContent', 'postShareContentEntities', 'PostShareContentThumbnails', 'PostShareResult', 'multiLocaleString', 'multiLocaleRichText', 'localeString', 'shareCreated', 'UGCDistribution', 'distribution', 'LinkedInDistributionTarget', 'LinkedInTargetedEntity', 'Locale', 'paging', 'LinkPaging', 'mediaUploadData', 'Followers' return types.
+    /// Field selectors for the 'PostShare', 'text', 'postShareAnnotations', 'postShareContent', 'postShareContentEntities', 'PostShareContentThumbnails', 'PostShareResult', 'multiLocaleString', 'multiLocaleRichText', 'localeString', 'shareCreated', 'UGCDistribution', 'distribution', 'LinkedInDistributionTarget', 'LinkedInTargetedEntity', 'Locale', 'paging', 'LinkPaging', 'mediaUploadData', 'Followers', 'ExternalDistributionChannels' return types.
     /// </summary>
     public static class CommonFields {
     }

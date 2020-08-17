@@ -1191,7 +1191,7 @@
     </ReturnType>
 
     <ReturnType Name="UGCDistribution" ClassName="UGCDistribution">
-      <Field Name="externalDistributionChannels" IsCollection="1" />
+      <Field Name="externalDistributionChannels" Type="ExternalDistributionChannels" IsCollection="1" />
       <Field Name="distributedViaFollowFeed" Type="bool" />
     </ReturnType>
 
@@ -1247,6 +1247,10 @@
     <ReturnType Name="Followers" ClassName="Followers">
         <Field Name="firstDegreeSize" PropertyName="FirstDegreeSize" Type="int" />
       </ReturnType>
+
+    <ReturnType Name="ExternalDistributionChannels" ClassName="ExternalDistributionChannels">
+      <Field Name="externalDistributionChannelType" PropertyName="ExternalDistributionChannelType" />
+    </ReturnType>
     
   </ApiGroup>
 
