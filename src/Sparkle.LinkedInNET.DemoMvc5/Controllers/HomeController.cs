@@ -1,36 +1,34 @@
-﻿namespace Sparkle.LinkedInNET.DemoMvc5.Controllers
+namespace Sparkle.LinkedInNET.DemoMvc5.Controllers
 {
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
     using System.IO;
     using System.Linq;
-    using System.Web;
+    using System.Net;
+    using System.Threading.Tasks;
     using System.Web.Mvc;
-    using Ninject;
+
+    using Newtonsoft.Json;
+
+    using Sparkle.LinkedInNET.Asset;
+    using Sparkle.LinkedInNET.Common;
     using Sparkle.LinkedInNET.DemoMvc5.Domain;
     using Sparkle.LinkedInNET.OAuth2;
-    using Sparkle.LinkedInNET.Profiles;
-    using System.Threading.Tasks;
     using Sparkle.LinkedInNET.Organizations;
-    using System.Net;
-    using System.Text.RegularExpressions;
-    using Sparkle.LinkedInNET.Common;
-    using System.Drawing;
-    using System.Drawing.Imaging;
-    using System.Drawing.Drawing2D;
-    using Sparkle.LinkedInNET.DemoMvc5.Utils;
+    using Sparkle.LinkedInNET.Profiles;
+    using Sparkle.LinkedInNET.Shares;
     using Sparkle.LinkedInNET.SocialActions;
+    using Sparkle.LinkedInNET.Targeting;
     using Sparkle.LinkedInNET.UGCPost;
-    using Sparkle.LinkedInNET.Video;
-
-    ////using Sparkle.LinkedInNET.ServiceDefinition;
+    using Sparkle.LinkedInNET.Videos;
 
     public class HomeController : Controller
     {
-        private LinkedInApi api;
-        private DataService data;
-        private LinkedInApiConfiguration apiConfig;
+        private readonly LinkedInApi api;
+        private readonly DataService data;
+        private readonly LinkedInApiConfiguration apiConfig;
+        private readonly List<string> errors = new List<string>();
 
         public HomeController(LinkedInApi api, DataService data, LinkedInApiConfiguration apiConfig)
         {
@@ -44,111 +42,96 @@
             ServicePointManager.SecurityProtocol = SecurityProtocolType.Tls12;
 
             // step 1: configuration
-            this.ViewBag.Configuration = this.apiConfig;
+            ViewBag.Configuration = apiConfig;
 
             // step 2: authorize url
             var scope = AuthorizationScope.ReadEmailAddress | AuthorizationScope.ReadWriteCompanyPage | AuthorizationScope.WriteShare;
             var state = Guid.NewGuid().ToString();
-            var redirectUrl = this.Request.Compose() + this.Url.Action("OAuth2");
-            this.ViewBag.LocalRedirectUrl = redirectUrl;
-            if (this.apiConfig != null && !string.IsNullOrEmpty(this.apiConfig.ApiKey))
+            var redirectUrl = Request.Compose() + Url.Action("OAuth2");
+            ViewBag.LocalRedirectUrl = redirectUrl;
+            if (apiConfig != null && !string.IsNullOrEmpty(apiConfig.ApiKey))
             {
-                var authorizeUrl = this.api.OAuth2.GetAuthorizationUrl(scope, state, redirectUrl);
-                this.ViewBag.Url = authorizeUrl;
+                var authorizeUrl = api.OAuth2.GetAuthorizationUrl(scope, state, redirectUrl);
+                ViewBag.Url = authorizeUrl;
             }
             else
             {
-                this.ViewBag.Url = null;
+                ViewBag.Url = null;
             }
 
-            var accessToken = "";            
-            this.data.SaveAccessToken(accessToken);
+            var accessToken = "";
+            data.SaveAccessToken(accessToken);
 
 
             // step 3
-            if (this.data.HasAccessToken)
+            if (data.HasAccessToken)
             {
-                var token = this.data.GetAccessToken();
-                this.ViewBag.Token = token;
+                var token = data.GetAccessToken();
+                ViewBag.Token = token;
                 var user = new UserAuthorization(token);
 
                 var watch = new Stopwatch();
                 watch.Start();
                 try
                 {
-                    ////var profile = this.api.Profiles.GetMyProfile(user);
                     var acceptLanguages = new string[] { culture ?? "en-US", "fr-FR", };
                     var fields = FieldSelector.For<Person>().WithAllFields();
-                    var profile = await this.api.Profiles.GetMyProfileAsync(user, acceptLanguages, fields);
-
-                    //await CreateLike(user);
-                    //await GetProfile(user);
-                    //await GetPosts(user);
-                    //await GetComemnt(user);
-                    // await GetPost(user);
-                    // await GetPosts(user);
-                    //await GetVideo(user);
-                    //await PublishImage(user);
-                    await PublishTest(user);
-
-
-                    // var originalPicture = await this.api.Profiles.GetOriginalProfilePictureAsync(user);
-                    // this.ViewBag.Picture = originalPicture;
-
-                    //this.ViewBag.Profile = profile;
+                    var profile = await api.Profiles.GetMyProfileAsync(user, acceptLanguages, fields);
+                    ViewBag.Profile = profile;
                 }
                 catch (LinkedInApiException ex)
                 {
-                    this.ViewBag.ProfileError = ex.ToString();
+                    ViewBag.ProfileError = ex.ToString();
                 }
                 catch (Exception ex)
                 {
-                    this.ViewBag.ProfileError = ex.ToString();
+                    ViewBag.ProfileError = ex.ToString();
                 }
 
                 watch.Stop();
-                this.ViewBag.ProfileDuration = watch.Elapsed;
+                ViewBag.ProfileDuration = watch.Elapsed;
             }
 
-            return this.View();
+            return View();
         }
 
+        #region OAuth
         public async Task<ActionResult> OAuth2(string code, string state, string error, string error_description)
         {
             if (!string.IsNullOrEmpty(error))
             {
-                this.ViewBag.Error = error;
-                this.ViewBag.ErrorDescription = error_description;
-                return this.View();
+                ViewBag.Error = error;
+                ViewBag.ErrorDescription = error_description;
+                return View();
             }
 
-            var redirectUrl = this.Request.Compose() + this.Url.Action("OAuth2");
-            var result = await this.api.OAuth2.GetAccessTokenAsync(code, redirectUrl);
+            var redirectUrl = Request.Compose() + Url.Action("OAuth2");
+            var result = await api.OAuth2.GetAccessTokenAsync(code, redirectUrl);
 
-            this.ViewBag.Code = code;
-            this.ViewBag.Token = result.AccessToken;
+            ViewBag.Code = code;
+            ViewBag.Token = result.AccessToken;
 
-            this.data.SaveAccessToken(result.AccessToken);
+            data.SaveAccessToken(result.AccessToken);
 
             var user = new UserAuthorization(result.AccessToken);
 
             ////var profile = this.api.Profiles.GetMyProfile(user);
             ////this.data.SaveAccessToken();
-            return this.View();
+            return View();
         }
 
         public ActionResult Connections()
         {
-            var token = this.data.GetAccessToken();
+            var token = data.GetAccessToken();
             var user = new UserAuthorization(token);
             // var connection = this.api.Profiles.GetMyConnections(user, 0, 500);
-            return this.View(string.Empty);
+            return View(string.Empty);
         }
 
         public ActionResult FullProfile(string id, string culture = "en-US")
         {
-            var token = this.data.GetAccessToken();
-            this.ViewBag.Token = token;
+            var token = data.GetAccessToken();
+            ViewBag.Token = token;
             var user = new UserAuthorization(token);
 
             Person profile = null;
@@ -160,41 +143,41 @@
                 var acceptLanguages = new string[] { culture ?? "en-US", "fr-FR", };
                 var fields = FieldSelector.For<Person>()
                     .WithAllFields();
-                profile = this.api.Profiles.GetMyProfileAsync(user, acceptLanguages, fields).Result;
+                profile = api.Profiles.GetMyProfileAsync(user, acceptLanguages, fields).Result;
 
-                this.ViewBag.Profile = profile;
+                ViewBag.Profile = profile;
             }
             catch (LinkedInApiException ex)
             {
-                this.ViewBag.ProfileError = ex.ToString();
-                this.ViewBag.RawResponse = ex.Data["ResponseText"];
+                ViewBag.ProfileError = ex.ToString();
+                ViewBag.RawResponse = ex.Data["ResponseText"];
             }
             catch (LinkedInNetException ex)
             {
-                this.ViewBag.ProfileError = ex.ToString();
-                this.ViewBag.RawResponse = ex.Data["ResponseText"];
+                ViewBag.ProfileError = ex.ToString();
+                ViewBag.RawResponse = ex.Data["ResponseText"];
             }
             catch (Exception ex)
             {
-                this.ViewBag.ProfileError = ex.ToString();
+                ViewBag.ProfileError = ex.ToString();
             }
 
             watch.Stop();
-            this.ViewBag.ProfileDuration = watch.Elapsed;
+            ViewBag.ProfileDuration = watch.Elapsed;
 
-            return this.View(profile);
+            return View(profile);
         }
 
         public ActionResult Play()
         {
-            var token = this.data.GetAccessToken();
-            this.ViewBag.Token = token;
-            return this.View();
+            var token = data.GetAccessToken();
+            ViewBag.Token = token;
+            return View();
         }
 
         public ActionResult Definition()
         {
-            var filePath = Path.Combine(this.Server.MapPath("~"), "..", "LinkedInApiV2.xml");
+            var filePath = Path.Combine(Server.MapPath("~"), "..", "LinkedInApiV2.xml");
             var builder = new Sparkle.LinkedInNET.ServiceDefinition.ServiceDefinitionBuilder();
             using (var fileStream = new FileStream(filePath, FileMode.Open, FileAccess.Read, FileShare.Read))
             {
@@ -212,20 +195,20 @@
             var serviceResult = new StreamReader(stream).ReadToEnd();
 
 
-            return this.Json(result, JsonRequestBehavior.AllowGet);
+            return Json(result, JsonRequestBehavior.AllowGet);
         }
 
         public ActionResult LogOff(string ReturnUrl)
         {
-            this.data.ClearAccessToken();
+            data.ClearAccessToken();
 
-            if (this.Url.IsLocalUrl(ReturnUrl))
+            if (Url.IsLocalUrl(ReturnUrl))
             {
-                return this.Redirect(ReturnUrl);
+                return Redirect(ReturnUrl);
             }
             else
             {
-                return this.RedirectToAction("Index");
+                return RedirectToAction("Index");
             }
         }
 
@@ -237,247 +220,670 @@
 
             public ApiResponse(T data)
             {
-                this.Data = data;
+                Data = data;
             }
 
             public string Error { get; set; }
             public T Data { get; set; }
         }
+        #endregion
 
-        private async Task PublishTest(UserAuthorization user)
-        {
-            //// var getVideo = await this.api.Asset.GetAssetAsync(user, "C4D05AQH5Hen4KpIFqA");
-
-
-            //// var videoData = DownladFromUrlToByte("https://c3labsdevstorage.blob.core.windows.net/7e46a98d-a143-4a4d-8e05-b3f95493cce4/e21b6488-8d6e-43e6-8c88-4ac4438ff8cb/videos/48c2071e-e9b0-43f7-8b8a-01da4d8c04a1.mp4");
-            //var videoData1 = DownladFromUrlToByte("https://c3labsdevstorage.blob.core.windows.net/7e46a98d-a143-4a4d-8e05-b3f95493cce4/e21b6488-8d6e-43e6-8c88-4ac4438ff8cb/videos/f57f8bc8-4fc8-44e4-9c5f-40f528f1a295.mp4");
-
-            //// var bigVideo = DownladFromUrlToByte("https://c3labsdevstorage.blob.core.windows.net/edf54915-d374-4074-a8ee-196897a7badd/07569e4a-134f-48ec-96cf-c89dd1234e9b/videos/152d90cb-3501-4673-a5b2-1ff61ecc9d33.mpeg");
-
-
-            //var aaa = await Video.VideoUpload.UploadVideoAsync(api, user, "urn:li:organization:18568129", videoData1);
-            //var bb = "";
-
-
-
-
-            //// Asset test
-            //var asset = new Asset.RegisterUploadRequest()
-            //{
-            //    RegisterUploadRequestData = new Asset.RegisterUploadRequestData()
-            //    {
-
-            //        // fileSizeIn bytes
-            //        FileSize = 52429800,
-            //        SupportedUploadMechanism = new List<string>() { "MULTIPART_UPLOAD" },
-            //        // SupportedUploadMechanism = new List<string>() { "SINGLE_REQUEST_UPLOAD" },
-            //        // Owner = "urn:li:person:" + "qhwvZ0K4cr",
-            //        Owner = "urn:li:organization:18568129",
-            //        Recipes = new List<string>() { "urn:li:digitalmediaRecipe:feedshare-video" },
-            //        ServiceRelationships = new List<Asset.ServiceRelationship>()
-            //        {
-            //            new Asset.ServiceRelationship()
-            //            {
-            //                Identifier = "urn:li:userGeneratedContent",
-            //                RelationshipType = "OWNER"
-            //            }
-            //        }
-            //    }
-            //};
-            //var requestAsset = await this.api.Asset.RegisterUploadAsync(user, asset);
-
-
-            //var multiPartSend = await Internals.LongVideoUpload.UploadLongVideoPartsAsync(this.api, requestAsset, bigVideo);
-
-            ////var postAsset = await this.api.Asset.UploadAssetAsync(requestAsset.Value.UploadMechanism.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest.UploadUrl, new Asset.UploadAssetRequest()
-            ////{
-            ////    RequestHeaders = new Asset.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest()
-            ////    {
-            ////        Headers = requestAsset.Value.UploadMechanism.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest.Headers,
-            ////        UploadUrl = requestAsset.Value.UploadMechanism.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest.UploadUrl,
-            ////    },
-            ////    Data = videoData1
-            ////});
-
-            //var test = "sss";
-
-
-             var mediaUrl = await UploadVideo(user);
-
-            // video test
-            var ugcPost = new UGCPost.UGCPostData()
-            {
-                // Author = "urn:li:person:" + "qhwvZ0K4cr",
-                // Author = "urn:li:organization:" + "18568129",
-                Author = "urn:li:organization:18568129",
-                LifecycleState = "PUBLISHED",
-                SpecificContent = new UGCPost.SpecificContent()
-                {
-                    ComLinkedinUgcShareContent = new UGCPost.ComLinkedinUgcShareContent()
-                    {
-                        UGCMedia = new List<UGCPost.UGCMedia>()
-                                {
-                                    new UGCPost.UGCMedia()
-                                    {
-                                        UGCMediaDescription = new UGCPost.UGCText()
-                                        {
-                                            Text = "test description"
-                                        },
-                                        Media = mediaUrl,// requestAsset.Value.Asset, // "urn:li:digitalmediaAsset:C4D05AQHwsp8DLpxHiA", // "urn:li:digitalmediaAsset:C5500AQG7r2u00ByWjw",
-                                        Status = "READY",
-                                        // Thumbnails = new List<string>(),
-                                        UGCMediaTitle = new UGCPost.UGCText()
-                                        {
-                                            Text = "Test Title"
-                                        }
-                                    }
-                                },
-                        ShareCommentary = new UGCPost.UGCText()
-                        {
-                            Text = "Test Commentary 111"
-                        },
-                        ShareMediaCategory = "VIDEO"
-                    }
-                },
-                //TargetAudience = new Common.TargetAudience()
-                //{
-
-                //},
-                Visibility = new UGCPost.UGCPostvisibility()
-                {
-                    comLinkedinUgcMemberNetworkVisibility = "PUBLIC"
-                }
-            };
-
-            var ugcPostResult = await this.api.UGCPost.PostAsync(user, ugcPost);
-
-            //var test2 = "sdfas";
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-            //// image test
-            //// var imageData = DownladFromUrlToByte("https://c3labsdevstorage.blob.core.windows.net/7e46a98d-a143-4a4d-8e05-b3f95493cce4/e21b6488-8d6e-43e6-8c88-4ac4438ff8cb/images/83278b25-b809-4458-912b-55b4d6d8b19d.jpg");
-            //var imageData = DownladFromUrlToByte("https://c3labsdevstorage.blob.core.windows.net/7e46a98d-a143-4a4d-8e05-b3f95493cce4/e21b6488-8d6e-43e6-8c88-4ac4438ff8cb/images/b7b12f6e-4eed-4ca1-b937-006b0c2aa93b.jpg");
-
-            //var postId = this.api.Media.Post(user, new Common.MediaUploadData()
-            //{
-            //    Data = imageData
-            //});
-
-            //var test = "sdfas";
-
-
-
-
-
-
-
-
-
-
-
-
-
-            // var profile1 =  this.api.Profiles.GetMyProfile(user, acceptLanguages, fields);
-
-
-            //var firstName = profile.FirstName.Localized.First.ToObject<string>();
-            //var firstName1 = profile.FirstName.Localized.First.Last.ToString();
-            //var firstName2 = profile.FirstName.Localized.First.ToObject<string>();
-
-            //var fieldsOrg = FieldSelector.For<OrganizationalEntityAcls>()
-            //    .WithAllFields();
-            //var userCompanies = this.api.Organizations.GetUserAdminApprOrganizations(user, fieldsOrg);
-
-
-            //var statistic = this.api.Shares.GetShareStatistics(user, "18568129", "6386953337324994560");
-
-            //var orgFollorerStatistic = this.api.Organizations.GetOrgFollowerStatistics(user, "18568129");
-
-            //var getShares = this.api.Shares.GetShares(user, "urn:li:organization:18568129", 1000, 5, 0);
-
-            //var postResult = this.api.Shares.Post(user, new Common.PostShare()
-            //{
-            //    Content = new Common.PostShareContent()
-            //    {
-            //        Title = "tttt",
-            //        ContentEntities = new List<Common.PostShareContentEntities>() { new Common.PostShareContentEntities() {
-            //                  //EntityLocation = "https://www.example.com/",
-            //                  //Thumbnails = new List<Common.PostShareContentThumbnails>(){new Common.PostShareContentThumbnails()
-            //                  //{
-            //                  //    ResolvedUrl = "http://wac.2f9ad.chicdn.net/802F9AD/u/joyent.wme/public/wme/assets/ec050984-7b81-11e6-96e0-8905cd656caf.jpg?v=30"
-            //                  //} }
-            //                  Entity = postId.Location
-            //              }
-            //          }
-            //    },
-            //    Distribution = new Common.Distribution()
-            //    {
-            //        LinkedInDistributionTarget = new Common.LinkedInDistributionTarget()
-            //        {
-            //            VisibleToGuest = true
-            //        }
-            //    },
-            //    Subject = "sub",
-            //    Text = new Common.PostShareText()
-            //    {
-            //        Text = "text"
-            //    },
-            //    // Owner = "urn:li:person:" + "123456789"
-            //    Owner = "urn:li:organization:18568129",
-            //}
-            //);
-        }
-
-        private async Task PublishImage(UserAuthorization user)
-        {
-            var imageUrl = "https://c3labsdevstorage.blob.core.windows.net/7e46a98d-a143-4a4d-8e05-b3f95493cce4/e21b6488-8d6e-43e6-8c88-4ac4438ff8cb/images/e0858668-005b-4f6c-a0b5-b0695661be6b.png";
-            var imageData = await ImageUtils.PrepareImageFromUrl(imageUrl, 10485760);
-
-            var postId = await this.api.Media.PostAsync(user, new Common.MediaUploadData()
-            {
-                Data = imageData
-            });
-        }
-
-        private async Task<string> UploadVideo(UserAuthorization user)
-        {
-            var videoUrl = "https://diricostorage.blob.core.windows.net/48131979-e14a-47c4-bf19-e02bb7226732/cb07d670-6fc8-410f-b21e-3456a284f523/4cf54e39-afdb-47b1-bf7d-020464985554/8b896ee0-d73d-48bc-bc92-60ce09407028/data";
-            var videoData = await ImageUtils.PrepareImageFromUrl(videoUrl, 10485760);
-
-            var ownerUrn = "urn:li:organization:18568129";
-            var videoUploadUrn = await VideoUpload.UploadVideoAsync(api, user, ownerUrn, videoData);
-            
-            return videoUploadUrn;            
-        }
-
-        private async Task GetComemnt(UserAuthorization user)
+        #region profiles ApiGroup
+        private async Task<Person> GetMyProfileAsync(UserAuthorization user)
         {
             try
             {
-                //// postId
-                var comments = await this.api.SocialActions.GetCommentsByUrnAsync(user, "urn:li:comment:(urn:li:activity:6604993552747380736,6604995118833377280)");
+                string culture = "en-US";
+                var acceptLanguages = new string[] { culture ?? "en-US", "fr-FR", };
+                var fields = FieldSelector.For<Person>().WithAllFields();
+                var profile = await api.Profiles.GetMyProfileAsync(user, acceptLanguages, fields);
 
-                var comment = await this.api.SocialActions.GetCommentsByUrnAsync(user, "urn:li:organization:18568129");
-
-                await ReplyComment(user, comment.Elements.First());
-                //var deleteLike = this.api.SocialActions.DeleteComment(user, comment.Elements.First().Urn, comment.Elements.First().Id, comment.Elements.First().Actor);
+                return profile;
             }
             catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<Person> GetProfileAsync(UserAuthorization user, string profileId)
+        {
+            try
+            {
+                var profile = await api.Profiles.GetProfileAsync(user, profileId);
+                return profile;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<PersonList> GetProfilesByIdsAsync(UserAuthorization user, string profileIds)
+        {
+            try
+            {
+                var profiles = await api.Profiles.GetProfilesByIdsAsync(user, profileIds);
+                return profiles;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<DegreeSize> GetFirstDegreeConnectionsAsync(UserAuthorization user, string profileId)
+        {
+            try
+            {
+                var degreeSize = await api.Profiles.GetFirstDegreeConnectionsAsync(user, profileId);
+                return degreeSize;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+        #endregion
+
+        #region Ugc
+        private async Task<UGCPostItems> GetUgcPostsAsync(UserAuthorization user, string companyUrn)
+        {
+            try
+            {
+                var posts = await api.UGCPost.GetUGCPostsAsync(user, companyUrn);
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<string> Publish_Video_Ugc(UserAuthorization user, string ownerUrn, string mediaUrl)
+        {
+            try
+            {
+                var videoData = DownladFromUrlToByte(mediaUrl);
+                var video = await Video.VideoUpload.UploadVideoAsync(api, user, ownerUrn, videoData);
+
+                //video test
+                var ugcPost = new UGCPost.UGCPostData()
+                {
+                    Author = ownerUrn,
+                    LifecycleState = "PUBLISHED",
+
+                    SpecificContent = new UGCPost.SpecificContent()
+                    {
+                        ComLinkedinUgcShareContent = new UGCPost.ComLinkedinUgcShareContent()
+                        {
+                            UGCMedia = new List<UGCPost.UGCMedia>()
+                            {
+                                new UGCPost.UGCMedia()
+                                {
+                                    UGCMediaDescription = new UGCPost.UGCText()
+                                    {
+                                        Text = "Description"
+                                    },
+                                    Media = video,
+                                    Status = "READY",
+                                    Thumbnails = new List<ImageThumbnail>(){
+                                            new ImageThumbnail()
+                                            {
+                                                Url = "https://www.google.com/images/branding/googlelogo/2x/googlelogo_color_92x30dp.png",
+                                                Height = 500,
+                                                Width = 300
+                                            }
+                                    },
+                                    UGCMediaTitle = new UGCPost.UGCText()
+                                    {
+                                        Text = "Title"
+                                    }
+                                }
+                            },
+                            ShareCommentary = new UGCPost.UGCText()
+                            {
+                                Text = "New video with Thumbnails 2"
+                            },
+                            ShareMediaCategory = "VIDEO"
+                        }
+                    },
+                    Visibility = new UGCPost.UGCPostvisibility()
+                    {
+                        comLinkedinUgcMemberNetworkVisibility = "PUBLIC"
+                    }
+                };
+
+                var t = JsonConvert.SerializeObject(ugcPost);
+
+                var ugcPostResult = await api.UGCPost.PostAsync(user, ugcPost);
+                return ugcPostResult;
+            }
+            catch (LinkedInApiException ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Shares
+        private async Task<PostShares> GetSharePostsAsync(UserAuthorization user, string companyUrn)
+        {
+            try
+            {
+                var posts = await api.Shares.GetSharesAsync(user, companyUrn);
+                return posts;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<string> Publish_Status_Share(UserAuthorization user, string ownerUrn)
+        {
+            try
+            {
+                var text = new PostShareText()
+                {
+                    Annotations = null,
+                    Text = $"Publish Status test from { DateTime.Now}"
+                };
+
+                var postItem = new PostShare()
+                {
+                    Distribution = new Distribution()
+                    {
+                        LinkedInDistributionTarget = new LinkedInDistributionTarget()
+                        {
+                            VisibleToGuest = true
+                        }
+                    },
+                    Owner = ownerUrn,
+                    Text = text
+                };
+
+                var response = await api.Shares.PostAsync(user, postItem);
+                var postUrn = "urn:li:share:" + response.Id;
+
+                return postUrn;
+            }
+            catch (LinkedInApiException ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<string> Publish_Link_Share(UserAuthorization user, string ownerUrn)
+        {
+            try
+            {
+                var text = new PostShareText()
+                {
+                    Annotations = null,
+                    Text = $"Publish Link test from { DateTime.Now}"
+                };
+
+                var postItem = new PostShare()
+                {
+                    Content = new PostShareContent()
+                    {
+                        Title = "Test title",
+                        ContentEntities = new List<PostShareContentEntities>() {
+                            new PostShareContentEntities() {
+                                EntityLocation = "https://yandex.ru/",
+                                Thumbnails = new List<PostShareContentThumbnails>() {
+                                    new PostShareContentThumbnails() {
+                                        ResolvedUrl = "https://www.google.com/images/branding/googleg/1x/googleg_standard_color_128dp.png",
+                                        ImageSpecificContent = {}
+                                    }
+                                }
+                            }
+                        }
+                    },
+                    Distribution = new Distribution()
+                    {
+                        LinkedInDistributionTarget = new LinkedInDistributionTarget()
+                        {
+                            VisibleToGuest = true
+                        }
+                    },
+                    Subject = " Test Description",
+                    Owner = ownerUrn,
+                    Text = text
+                };
+
+                var response = await api.Shares.PostAsync(user, postItem);
+                var postUrn = "urn:li:share:" + response.Id;
+
+                return postUrn;
+            }
+            catch (LinkedInApiException ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<string> Publish_Image_Share(UserAuthorization user, string ownerUrn, string mediaUrl)
+        {
+            try
+            {
+                var imagesData = DownladFromUrlToByte(mediaUrl);
+
+                var text = new PostShareText()
+                {
+                    Annotations = null,
+                    Text = $"Publish Image test from { DateTime.Now}"
+                };
+
+                var postItem = new PostShare()
+                {
+                    Distribution = new Distribution()
+                    {
+                        LinkedInDistributionTarget = new LinkedInDistributionTarget()
+                        {
+                            VisibleToGuest = true
+                        }
+                    },
+                    Owner = ownerUrn,
+                    Text = text
+                };
+
+                if (imagesData != null)
+                {
+                    var contentEntities = new List<PostShareContentEntities>();
+
+
+                    var imageUrn = await UploadImage(user, imagesData, ownerUrn);
+
+                    if (imageUrn == null)
+                    {
+                        return null;
+                    }
+
+                    contentEntities.Add(new PostShareContentEntities()
+                    {
+                        Entity = imageUrn
+                    });
+
+                    postItem.Content = new PostShareContent()
+                    {
+                        ContentEntities = contentEntities,
+                        MediaCategory = "IMAGE"
+                    };
+                }
+
+                var response = await api.Shares.PostAsync(user, postItem);
+                var postUrn = "urn:li:share:" + response.Id;
+
+                return postUrn;
+            }
+            catch (LinkedInApiException ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<string> Publish_Article_Share(UserAuthorization user, string ownerUrn, string mediaUrl)
+        {
+            try
+            {
+                var imagesData = DownladFromUrlToByte(mediaUrl);
+
+                var text = new PostShareText()
+                {
+                    Annotations = null,
+                    Text = $"Publish Document test from { DateTime.Now}"
+                };
+
+                var postItem = new PostShare()
+                {
+                    Distribution = new Distribution()
+                    {
+                        LinkedInDistributionTarget = new LinkedInDistributionTarget()
+                        {
+                            VisibleToGuest = true
+                        }
+                    },
+                    Owner = ownerUrn,
+                    Text = text
+                };
+
+                if (imagesData != null)
+                {
+                    var contentEntities = new List<PostShareContentEntities>
+                    {
+                        new PostShareContentEntities()
+                        {
+                            EntityLocation = mediaUrl
+                        }
+                    };
+
+                    postItem.Content = new PostShareContent()
+                    {
+                        ContentEntities = contentEntities,
+                        MediaCategory = "ARTICLE"
+                    };
+                }
+
+                var response = await api.Shares.PostAsync(user, postItem);
+                var postUrn = "urn:li:share:" + response.Id;
+
+                return postUrn;
+            }
+            catch (LinkedInApiException ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region Statistics and Analytics
+        private async Task<ShareStatistic> GetShareStatisticsAsync(UserAuthorization user, string companyId, string shareId)
+        {
+            try
+            {
+                var shareStatistics = await api.Shares.GetShareStatisticsAsync(user, companyId, shareId);
+                return shareStatistics;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<PostStatistic> GetSharePostStatisticsAsync(UserAuthorization user, string companyId, string shareUrn)
+        {
+            try
+            {
+                var sharePostStatistics = await api.Shares.GetSharePostStatisticsAsync(user, companyId, shareUrn);
+                return sharePostStatistics;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<VideoAnalytics> GetVideoStatisticsAsync(UserAuthorization user, string videoPostId, string type, string agregation)
+        {
+            try
+            {
+                var videoStatistics = await api.Videos.GetVideoStatisticsAsync(user, videoPostId, type, agregation);
+                return videoStatistics;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region targeting ApiGroup
+        private async Task<Industries> GetIndustriesAsync(UserAuthorization user, string language, string country)
+        {
+            try
+            {
+                var industries = await api.Targeting.GetIndustriesAsync(user, language, country);
+
+                return industries;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<JobFunctions> GetJobFunctionsAsync(UserAuthorization user, string locale)
+        {
+            try
+            {
+                var functions = await api.Targeting.GetJobFunctionsAsync(user, locale);
+                return functions;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<CountryGroups> GetCountryGroupsAsync(UserAuthorization user, string language, string country)
+        {
+            try
+            {
+                var countryGroups = await api.Targeting.GetCountryGroupsAsync(user, language, country);
+                return countryGroups;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<Countries> GetCountriesAsync(UserAuthorization user, string language, string country, string countryGroupUrn)
+        {
+            try
+            {
+                var countries = await api.Targeting.GetCountriesAsync(user, language, country, "countryGroup", countryGroupUrn);
+                return countries;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<States> GetStatesAsync(UserAuthorization user, string language, string country, string countryUrn)
+        {
+            try
+            {
+                var states = await api.Targeting.GetStatesAsync(user, language, country, "country", countryUrn);
+                return states;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<Regions> GetRegionsAsync(UserAuthorization user, string language, string country, string stateUrn)
+        {
+            try
+            {
+                var regions = await api.Targeting.GetRegionsAsync(user, language, country, "states", stateUrn);
+                return regions;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<Seniorities> GetSenioritiesAsync(UserAuthorization user, string language, string country)
+        {
+            try
+            {
+                var seniorities = await api.Targeting.GetSenioritiesAsync(user, language, country);
+                return seniorities;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<TargetingFacets> GetTargetingFacetsAsync(UserAuthorization user)
+        {
+            try
+            {
+                var targetingFacets = await api.Targeting.GetTargetingFacetsAsync(user);
+                return targetingFacets;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        private async Task<AudienceCounts> GetAudienceCountsAsync(UserAuthorization user, string targetingCriteria)
+        {
+            try
+            {
+                var audienceCounts = await api.Targeting.GetAudienceCountsAsync(user, targetingCriteria);
+                return audienceCounts;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+
+        #endregion
+
+        #region common upload methods
+        public static byte[] DownladFromUrlToByte(string url)
+        {
+            HttpWebRequest req;
+            HttpWebResponse res = null;
+
+            try
+            {
+                req = (HttpWebRequest)WebRequest.Create(url);
+                res = (HttpWebResponse)req.GetResponse();
+                Stream stream = res.GetResponseStream();
+
+                var buffer = new byte[4096];
+                using (MemoryStream ms = new MemoryStream())
+                {
+                    var bytesRead = 0;
+                    while ((bytesRead = stream.Read(buffer, 0, buffer.Length)) != 0)
+                    {
+                        ms.Write(buffer, 0, bytesRead);
+                    }
+                    return ms.ToArray();
+                }
+            }
+            finally
+            {
+                if (res != null)
+                {
+                    res.Close();
+                }
+            }
+        }
+
+        public async Task<string> UploadImage(UserAuthorization user, byte[] imageData, string ownerUrn)
+        {
+            try
+            {
+                var asset = new Asset.RegisterUploadRequest()
+                {
+                    RegisterUploadRequestData = new Asset.RegisterUploadRequestData()
+                    {
+                        Owner = ownerUrn,
+                        Recipes = new List<string>() { "urn:li:digitalmediaRecipe:feedshare-image" },
+                        ServiceRelationships = new List<Asset.ServiceRelationship>()
+                        {
+                            new ServiceRelationship()
+                            {
+                                Identifier = "urn:li:userGeneratedContent",
+                                RelationshipType = "OWNER"
+                            }
+                        }
+                    }
+                };
+                var requestAsset = await api.Asset.RegisterUploadAsync(user, asset);
+                var imageUrn = requestAsset.Value.Asset;
+
+                var postAsset = await api.Asset.UploadImageAssetAsync(user,
+                    requestAsset.Value.UploadMechanism.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest.UploadUrl,
+                    new Asset.UploadAssetRequest()
+                    {
+                        RequestHeaders = new Asset.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest()
+                        {
+                            Headers = requestAsset.Value.UploadMechanism.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest.Headers,
+                            UploadUrl = requestAsset.Value.UploadMechanism.ComLinkedinDigitalmediaUploadingMediaUploadHttpRequest.UploadUrl,
+                        },
+                        Data = imageData
+
+                    });
+
+                return imageUrn;
+            }
+            catch (LinkedInApiException ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+            catch (Exception ex)
+            {
+                errors.Add(ex.ToString());
+                return null;
+            }
+        }
+        #endregion
+
+        #region Comments and Likes
+        private async Task GetComemntByUrn(UserAuthorization user, string commentUrn)
+        {
+            try
+            {
+                var comment = await api.SocialActions.GetCommentsByUrnAsync(user, commentUrn);
+
+                await ReplyComment(user, comment.Elements.First());
+            }
+            catch (Exception)
             {
 
             }
@@ -500,83 +906,33 @@
                     ParentComment = comment.Urn
                 };
 
-                var response = await this.api.SocialActions.CreateCommentOnUrnAsync(user,
+                var response = await api.SocialActions.CreateCommentOnUrnAsync(user,
                     comment.Urn, createCommentRequest);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
         }
-        private async Task GetVideo(UserAuthorization user)
-        {
-            var videoId = "urn:li:digitalmediaAsset:C4E05AQHDEiyF00wWkQ"; // video post on Horvath janos zrt
-            var postId = "urn:li:ugcPost:6650705316675665920"; // video post on Horvath janos zrt.            
-            var video = await this.api.UGCPost.GetUGCVideoAsync(user, postId);
-            var mediaElements = video.SpecificContent.ComLinkedinUgcVideoContent.UGCMedia[0].mediaData.Elements;
 
-            var videoUrl = mediaElements.FirstOrDefault().Identifiers[0].Identifier;
-
-        }
-
-        private async Task GetPost(UserAuthorization user)
-        {
-            var postId = "urn:li:ugcPost:6650705316675665920"; // video post on Horvath janos zrt.
-            var post = await this.api.UGCPost.GetUGCPostAsync(user, postId);
-        }
-
-        private async Task GetPosts(UserAuthorization user)
-        {
-            var pageId = "urn:li:organization:18568129"; // Horvath janos zrt.            
-            var post = await this.api.UGCPost.GetUGCPostsAsync(user, pageId, 0, 5);
-            // await DeletePost(user, post.Elements.Last());
-        }
-
-        private async Task DeletePost(UserAuthorization user, UGCPostItemResult post)
+        private async Task CreateLike(UserAuthorization user, string likeUrn, string actorUrn)
         {
             try
             {
-
-                var response = await this.api.UGCPost.DeleteUGCPostAsync(user, post.Id);
-            }
-            catch (Exception ex)
-            {
-
-            }
-        }
-
-        private async Task GetProfile(UserAuthorization user)
-        {
-
-            try
-            {
-                // var profile = await this.api.Profiles.GetProfileAsync(user, "LWq7hpOmwk");
-                var profile = await this.api.Profiles.GetProfileAsync(user, "1ky82GzXRL");
-                var profiles = await this.api.Profiles.GetProfilesByIdsAsync(user, "(id:qhwvZ0K4cr),(id:LWq7hpOmwk),(id:1ky82GzXRL)");
-            }
-            catch { }
-        }
-
-        private async Task CreateLike(UserAuthorization user)
-        {
-            try
-            {
-                var postUrn = "urn:li:comment:(urn:li:activity:6604993552747380736,6605016542239301632)";
-                var actorUrn = "urn:li:organization:18568129";
-
                 var createLikeRequest = new CreateLikeRequest
                 {
                     Actor = actorUrn,
-                    Object = postUrn
+                    Object = likeUrn
                 };
 
-                var like = await this.api.SocialActions.CreateLikeAsync(user, postUrn, createLikeRequest);
-                await this.api.SocialActions.DeleteLikeAsync(user, postUrn, actorUrn, actorUrn);
+                var like = await api.SocialActions.CreateLikeAsync(user, likeUrn, createLikeRequest);
+                await api.SocialActions.DeleteLikeAsync(user, likeUrn, actorUrn, actorUrn);
             }
-            catch (Exception ex)
+            catch (Exception)
             {
 
             }
         }
+        #endregion
     }
 }
