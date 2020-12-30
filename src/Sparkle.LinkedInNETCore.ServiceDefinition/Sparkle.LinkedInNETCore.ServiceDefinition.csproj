@@ -1,0 +1,27 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ApiGroup.cs" Link="ApiGroup.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ApiMethod.cs" Link="ApiMethod.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ApisRoot.cs" Link="ApisRoot.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\CSharpGenerator.cs" Link="CSharpGenerator.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\CSharpProperty.cs" Link="CSharpProperty.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\Field.cs" Link="Field.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\FieldName.cs" Link="FieldName.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\FieldSelector.cs" Link="FieldSelector.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ImportFieldSelectors.cs" Link="ImportFieldSelectors.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\NameTransformation.cs" Link="NameTransformation.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\Parameter.cs" Link="Parameter.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\QueryString.cs" Link="QueryString.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ReturnType.cs" Link="ReturnType.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ServiceDefinition.cs" Link="ServiceDefinition.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\ServiceDefinitionBuilder.cs" Link="ServiceDefinitionBuilder.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\TextWriterExtensions.cs" Link="TextWriterExtensions.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET.ServiceDefinition\Tuple.cs" Link="Tuple.cs" />
+  </ItemGroup>
+
+</Project>

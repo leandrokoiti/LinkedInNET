@@ -1,0 +1,53 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <TargetFramework>netcoreapp3.1</TargetFramework>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>TRACE;ASYNCTASKS</DefineConstants>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <Compile Include="..\Sparkle.LinkedInNET\ApiError.cs" Link="ApiError.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\FieldSelector.cs" Link="FieldSelector.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\FieldSelectorValue.cs" Link="FieldSelectorValue.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\ILinkedInException.cs" Link="ILinkedInException.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\BaseApi.Async.cs" Link="Internals\BaseApi.Async.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\BaseApi.cs" Link="Internals\BaseApi.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\Extensions.cs" Link="Internals\Extensions.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\FX.cs" Link="Internals\FX.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\LibraryInfo.cs" Link="Internals\LibraryInfo.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\RequestContext.cs" Link="Internals\RequestContext.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Internals\Strings.Designer.cs" Link="Internals\Strings.Designer.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\LinkedInApi.cs" Link="LinkedInApi.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\LinkedInApiConfiguration.cs" Link="LinkedInApiConfiguration.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\LinkedInApiException.cs" Link="LinkedInApiException.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\LinkedInNetException.cs" Link="LinkedInNetException.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\OAuth2\AuthorizationAccessToken.cs" Link="OAuth2\AuthorizationAccessToken.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\OAuth2\AuthorizationScope.cs" Link="OAuth2\AuthorizationScope.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\OAuth2\OAuth2Api.Async.cs" Link="OAuth2\OAuth2Api.Async.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\OAuth2\OAuth2Api.cs" Link="OAuth2\OAuth2Api.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\OAuth2\OAuth2Error.cs" Link="OAuth2\OAuth2Error.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Services.tt.cs" Link="Services.tt.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\UserAuthorization.cs" Link="UserAuthorization.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Video\VideoAggregationEnum.cs" Link="Video\VideoAggregationEnum.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Video\VideoAnalyticsTypeEnum.cs" Link="Video\VideoAnalyticsTypeEnum.cs" />
+    <Compile Include="..\Sparkle.LinkedInNET\Video\VideoUpload.cs" Link="Video\VideoUpload.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="..\Sparkle.LinkedInNET\Internals\Strings.resx" Link="Internals\Strings.resx" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Internals\" />
+    <Folder Include="Video\" />
+    <Folder Include="OAuth2\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="newtonsoft.json" Version="12.0.3" />
+  </ItemGroup>
+
+</Project>
